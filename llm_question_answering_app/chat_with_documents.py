@@ -62,3 +62,20 @@ def calculate_embedding_cost(texts):
     # print(f'Total tokens: {total_tokens}')
     # print(f'Embeeding cost in USD: {total_tokens / 1000 * 0.0004:.6f}')
     return total_tokens, total_tokens / 1000 * 0.0004
+
+if __name__ == "__main__":
+    import os
+    from dotenv import load_dotenv, find_dotenv
+    load_dotenv(find_dotenv(), override=True)
+
+    st.image('img.png')
+    st.subheader('LLM Question - Answering Application 🤖')
+    with st.sidebar:
+        api_key = st.text_input('OpenAI API key:', type='password')
+        if api_key:
+            os.environ['OPENAI_API_KEY']=api_key
+
+        uploaded_file = st.file_uploader('Upload a file:', type=['pdf','docx','txt'])
+        chunk_size = st.number_input('Chunk size: ', min_value=100, max_value=2048, value=512)
+        k = st.number_input('k', min_value=1, max_value=20, value=3)
+        add_data = st.button('Add Data')
