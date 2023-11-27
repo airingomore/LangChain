@@ -37,8 +37,8 @@ def chunk_data(data, chunk_size=256, chunk_overlap=20):
 
 def create_embeddings(chunks):
     embeddings = OpenAIEmbeddings()
-    vector_store = Chroma.from_documents(chunks, embeddings)
-    #vector_store = Chroma.from_documents(chunks, embeddings, persist_directory='./mychroma_db')
+    #vector_store = Chroma.from_documents(chunks, embeddings)
+    vector_store = Chroma.from_documents(chunks, embeddings, persist_directory='./mychroma_db')
     return vector_store
 
 
@@ -106,3 +106,12 @@ if __name__ == "__main__":
 
                 st.session_state.vs = vector_store
                 st.success('file uploaded, chunked and embeeded succesfully')
+
+
+    q = st.text_input('Ask a question about the content of your file: ')
+    if q:
+        if 'vs' in st.session_state:
+            vector_store = st.session_state.vs
+            st.write(f'k: {k}')
+            answer = ask_and_get_answer(vector_store, q, k)
+            st.text_area('LLM Answer: ', value=answer)
