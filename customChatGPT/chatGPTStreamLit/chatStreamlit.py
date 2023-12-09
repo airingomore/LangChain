@@ -33,7 +33,7 @@ with st.sidebar:
             st.session_state.messages.append(
                 SystemMessage(content=system_message)
             )
-        st.write(st.session_state.messages)
+        #st.write(st.session_state.messages)
     
     if user_prompt:
         st.session_state.messages.append(
@@ -46,4 +46,27 @@ with st.sidebar:
     
         st.session_state.messages.append(AIMessage(content=response.content))
 
-st.session_state.messages
+#st.session_state.messages
+#message('this is ChatGPT', is_user=False)
+#message('this is the user',is_user=True )
+
+# adding a default SystemMessage if the user didn't entered one
+if len(st.session_state.messages) >= 1:
+    if not isinstance(st.session_state.messages[0], SystemMessage):
+        st.session_state.messages.insert(0, SystemMessage(content='You are a helpful assistant.'))
+
+
+# displaying the messages (chat History)
+# index 0 is system message
+#[
+#  "SystemMessage(content='respond in just one sentence')",
+#  "HumanMessage(content='what is AI')",
+#  "AIMessage(content='AI, or artificial intelligence, is a field of computer science that focuses on creating intelligent machines capable of performing tasks that typically require human intelligence.')",
+#  "HumanMessage(content='who invented AI?')",
+#  "AIMessage(content='AI does not have a single inventor, but it has been developed by numerous researchers and pioneers such as Alan Turing, John McCarthy, Marvin Minsky, and others over several decades.')"
+#]
+for i,msg in enumerate(st.session_state.messages[1:]):
+    if i % 2 == 0:
+        message(msg.content, is_user=True, key=f'{i} + 🤓')
+    else:
+         message(msg.content, is_user=False, key=f'{i} + 🤖')
